@@ -11,13 +11,16 @@ import math
 # Specifying trial number is optional. Default is 1.
 
 def splice_trial(matrix, sensor_streams, segments, path='catkin_ws/rollout/data/', trial_number=1):
+    # Specify path, automatically iterate to higher trial number if inputted trial number already recorded
     save_path = path + 'trial_' + str(trial_number)
     while os.path.exists(save_path):
         trial_number += 1
         save_path = path + 'trial_' + str(trial_number)
+    # Create a folder for the trial
     os.mkdir(save_path)
     print(f"Folder created for trial {trial_number}, under path {save_path}")
 
+    # Ignore part of matrix that doesn't evenly fit in a segment
     matrix_dim = matrix.shape
     segment_len = math.floor(matrix_dim[1]/segments)
 
