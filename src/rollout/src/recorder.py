@@ -179,6 +179,8 @@ class rolloutRecorder():
 
         self.config_display(False)
 
+        self.matrix = []
+
         print('[recorder] Ready ...')
 
         if not display_images:
@@ -540,6 +542,16 @@ class rolloutRecorder():
             self.drop = True
         else:
             self.drop = False
+
+    def callbackRecorder(self, msg):
+        motor1_torque = pass
+        motor2_torque = pass
+        motor1_angle = pass
+        motor2_angle = pass
+        finger1_force = pass
+        finger2_force = pass
+        self.matrix.append([motor1_torque; motor2_torque; motor1_angle; motor2_angle; finger1_force; finger2_force])
+
 
     def callbackClear(self, msg):
         self.clear = True
