@@ -1,0 +1,15 @@
+<launch>
+  <node name="camera" pkg="usb_cam" type="usb_cam_node" output="screen" >
+    <param name="video_device" value="/dev/video4" />
+    <param name="image_width" value="640" />
+    <param name="image_height" value="480" />
+    <param name="pixel_format" value="yuyv" />
+    <param name="camera_frame_id" value="end_link1" />
+<!--    <param name="camera_info_url" value="file:///home/osher/catkin_ws/src/insertion_games/config/camera1.yaml"/>-->
+  </node>
+</launch>
+
+<!--K: [408.159376182928, 0.0, 344.4975869225277, 0.0, 409.4250704589321, 218.9221878774708, 0.0, 0.0, 1.0]
+-->
+<!--P: [308.0934143066406, 0.0, 344.8607873289984, 0.0, 0.0, 348.1751098632812, 214.0850072662251, 0.0, 0.0, 0.0, 1.0, 0.0]
+-->

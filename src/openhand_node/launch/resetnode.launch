@@ -1,0 +1,5 @@
+<launch>
+	<node pkg="openhand_node" name="ResetMotorNode" type="ResetMotorNode.py" output="screen">
+		<rosparam command="load" file="$(find openhand_node)/param/reset_parameters.yaml"/>
+	</node>
+</launch>

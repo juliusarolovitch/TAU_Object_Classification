@@ -1,0 +1,6 @@
+devel_space: /home/curtisbot/catkin_ws/devel
+install: false
+install_space: /home/curtisbot/catkin_ws/install
+profile: default
+source_space: /home/curtisbot/catkin_ws/src
+workspace: /home/curtisbot/catkin_ws

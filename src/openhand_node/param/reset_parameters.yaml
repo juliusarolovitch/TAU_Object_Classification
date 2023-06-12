@@ -1,0 +1,7 @@
+# Reset motor
+reset_servo_ids: [5]
+reset_servo_type: 'XM'
+reset_servo_port: '/dev/ttyUSB1'
+reset_openhand_type: 'Reset_Motor'
+reset_direction: 1
+reset_motor_offset: [0.0]

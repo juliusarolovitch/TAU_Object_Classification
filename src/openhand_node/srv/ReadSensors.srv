@@ -1,0 +1,5 @@
+int32 num_sensors
+---
+float32[] force
+float32[] flex
+

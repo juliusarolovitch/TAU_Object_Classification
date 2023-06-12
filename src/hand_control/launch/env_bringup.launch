@@ -1,0 +1,55 @@
+<launch>
+  <!-- <arg name="recordData" default="false" /> -->
+	<arg name="convert_tf" default="false" />
+	<arg name="track" default="true" />
+	<arg name="hand" default="true" />
+	<arg name="pub_delay" default="10.0" />
+  <arg name="num_fingers" default="2" />
+  <arg name="ron_exp" default="false" />
+	<arg name="sensors" default="false" />
+
+  <group if="$(arg hand)">
+      <group if="$(eval arg('num_fingers') == 2)">
+          <include file="$(find openhand_node)/launch/openhand.launch" />
+          <node pkg="hand_control" name="hand_control" type="gripper.py" output="screen">
+             <rosparam command="load" file="$(find hand_control)/param/control_params.yaml" />
+          </node>
+      </group>
+      <group if="$(eval arg('num_fingers') == 3)">
+          <include file="$(find openhand_node)/launch/openhand.launch" />
+          <node pkg="hand_control" name="hand_control" type="gripper_3f_velocity.py" output="screen">
+             <rosparam command="load" file="$(find hand_control)/param/control_params_3f.yaml" />
+          </node>
+      </group>
+
+      <node name="gripper_state_publisher" pkg="gripper_state_publisher" type="gripper_state_publisher_node" output="screen" launch-prefix="bash -c 'sleep $(arg pub_delay); $0 $@' "/>
+  </group>
+
+  <group if="$(arg track)">
+    <include file="$(find hand_control)/launch/continuous_detection.launch"/>
+  </group>
+
+  <group if="$(arg convert_tf)">
+    <param name="robot_description" command="$(find xacro)/xacro --inorder $(find kortex_description)/grippers/${gripper}/urdf/${gripper}_macro.xacro"/>
+   <node  name="joint_state_publisher" pkg="hand_control" type="custom_joint_state_publisher.py" output="screen"/>
+    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
+  </group>
+
+  <group if="$(arg ron_exp)">
+  <node pkg="rollout" name="rollout" type="rollout_3f.py" output="screen"/>
+  </group>
+
+
+  <node pkg="rollout" name="rollout_record" type="recorder.py" output="screen"/>
+  <node pkg="rollout" name="rollout" type="rollout_mod.py" output="screen"/>
+  <node pkg="rollout" name="rollout_restart" type="rollout_reset.py" output="screen"/>
+
+
+      <group if="$(arg sensors)">
+    <node pkg="rosserial_python" type="serial_node.py" name="flex_force">
+      <param name="port" value="/dev/ttyUSB2"/>
+      <param name="baud" value="9600"/>
+    </node>
+  </group>
+
+</launch>

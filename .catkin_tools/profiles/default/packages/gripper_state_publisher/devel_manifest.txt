@@ -1,0 +1,6 @@
+gripper_state_publisher
+/home/curtisbot/catkin_ws/devel/.private/gripper_state_publisher/cmake.lock /home/curtisbot/catkin_ws/devel/./cmake.lock
+/home/curtisbot/catkin_ws/devel/.private/gripper_state_publisher/share/gripper_state_publisher/cmake/gripper_state_publisherConfig-version.cmake /home/curtisbot/catkin_ws/devel/share/gripper_state_publisher/cmake/gripper_state_publisherConfig-version.cmake
+/home/curtisbot/catkin_ws/devel/.private/gripper_state_publisher/share/gripper_state_publisher/cmake/gripper_state_publisherConfig.cmake /home/curtisbot/catkin_ws/devel/share/gripper_state_publisher/cmake/gripper_state_publisherConfig.cmake
+/home/curtisbot/catkin_ws/devel/.private/gripper_state_publisher/lib/pkgconfig/gripper_state_publisher.pc /home/curtisbot/catkin_ws/devel/lib/pkgconfig/gripper_state_publisher.pc
+/home/curtisbot/catkin_ws/devel/.private/gripper_state_publisher/lib/gripper_state_publisher/gripper_state_publisher_node /home/curtisbot/catkin_ws/devel/lib/gripper_state_publisher/gripper_state_publisher_node

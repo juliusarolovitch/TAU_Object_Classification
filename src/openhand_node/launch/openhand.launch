@@ -1,0 +1,12 @@
+<launch>
+	<node pkg="openhand_node" name="openhandNode" type="openhandNode.py" output="screen">
+		<rosparam command="load" file="$(find openhand_node)/param/model_parameters.yaml"/>
+	</node>
+
+	<arg name="node_start_delay" default="2.0" />-->
+
+	<node pkg="openhand_node" name="ResetMotorNode" type="ResetMotorNode.py" output="screen" launch-prefix="bash -c 'sleep $(arg node_start_delay); $0 $@' ">
+		<rosparam command="load" file="$(find openhand_node)/param/reset_parameters.yaml"/>
+	</node>
+
+</launch>

@@ -1,0 +1,56 @@
+<launch>
+
+  <arg name="launch_prefix" default="" /> <!-- set to value="gdbserver localhost:10000" for remote debugging -->
+  <arg name="node1_namespace" default="test1" />
+  <arg name="node2_namespace" default="test2" />
+  <arg name="camera1_name" default="camera1" />
+  <arg name="camera2_name" default="camera2" />
+  <arg name="image_topic" default="image_rect" />
+
+  <node pkg="tf" type="static_transform_publisher" name="camera1_broadcaster" args="0 0.1 0 0, 0, 0, 1 world $(arg camera1_name)_link 100" />
+  <node pkg="tf" type="static_transform_publisher" name="camera2_broadcaster" args="0 0 0 0, 0, 0, 1 world $(arg camera2_name)_link 100" />
+
+  <node name="$(arg camera1_name)" pkg="usb_cam" type="usb_cam_node" output="screen" ns="$(arg node1_namespace)" >
+    <param name="video_device" value="/dev/video0" />
+    <param name="image_width" value="640" />
+    <param name="image_height" value="480" />
+    <param name="pixel_format" value="yuyv" />
+    <param name="camera_frame_id" value="$(arg camera1_name)_link" />
+  </node>
+
+  <node name="$(arg camera2_name)" pkg="usb_cam" type="usb_cam_node" output="screen" ns="$(arg node2_namespace)" >
+    <param name="video_device" value="/dev/video2" />
+    <param name="image_width" value="640" />
+    <param name="image_height" value="480" />
+    <param name="pixel_format" value="yuyv" />
+    <param name="camera_frame_id" value="$(arg camera2_name)_link" />
+  </node>
+
+  <!--Convert image_raw to undistorted cam-->
+  <node pkg="image_proc" type="image_proc" name="image_proc_node" ns="$(arg node1_namespace)/$(arg camera1_name)" />
+  <node pkg="image_proc" type="image_proc" name="image_proc_node" ns="$(arg node2_namespace)/$(arg camera2_name)" />
+
+  <node pkg="apriltag_ros" type="apriltag_ros_continuous_node" name="apriltag_ros_continuous_node" ns="$(arg node1_namespace)" clear_params="true" output="screen" launch-prefix="$(arg launch_prefix)" >
+    <!-- Remap topics from those used in code to those on the ROS network -->
+    <remap from="image_rect" to="$(arg camera1_name)/$(arg image_topic)" />
+    <remap from="camera_info" to="$(arg camera1_name)/camera_info" />
+    <param name="camera_frame" type="str" value="$(arg camera1_name)_link" />
+    <param name="publish_tag_detections_image" type="bool" value="true" />      <!-- default: false -->
+    <!-- Set parameters -->
+    <rosparam command="load" file="$(find apriltag_ros)/config/settings.yaml"/>
+    <rosparam command="load" file="$(find apriltag_ros)/config/tags.yaml"/>
+  </node>
+
+  <node pkg="apriltag_ros" type="apriltag_ros_continuous_node" name="apriltag_ros_continuous_node" ns="$(arg node2_namespace)" clear_params="true" output="screen" launch-prefix="$(arg launch_prefix)" >
+    <!-- Remap topics from those used in code to those on the ROS network -->
+    <remap from="image_rect" to="$(arg camera2_name)/$(arg image_topic)" />
+    <remap from="camera_info" to="$(arg camera2_name)/camera_info" />
+    <param name="camera_frame" type="str" value="$(arg camera2_name)_link" />
+    <param name="publish_tag_detections_image" type="bool" value="true" />      <!-- default: false -->
+    <!-- Set parameters -->
+    <rosparam command="load" file="$(find apriltag_ros)/config/settings.yaml"/>
+    <rosparam command="load" file="$(find apriltag_ros)/config/tags.yaml"/>
+  </node>
+
+
+</launch>
